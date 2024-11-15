@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { verifyToken } from '@/lib/auth'
+import jwt from 'jsonwebtoken'
+
+// Helper function to verify token
+const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
+  } catch {
+    return null
+  }
+}
 
 export async function PATCH(request, { params }) {
   try {
@@ -26,6 +35,7 @@ export async function PATCH(request, { params }) {
     
     return NextResponse.json(client)
   } catch (error) {
+    console.error('PATCH Error:', error)
     return NextResponse.json({ 
       error: 'Error updating client',
       details: error.message 
@@ -55,6 +65,7 @@ export async function DELETE(request, { params }) {
     
     return NextResponse.json({ success: true })
   } catch (error) {
+    console.error('DELETE Error:', error)
     return NextResponse.json({ 
       error: 'Error deleting client',
       details: error.message 
