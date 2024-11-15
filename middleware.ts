@@ -1,18 +1,24 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { jwtDecode } from 'jwt-decode'
 
 export function middleware(request: NextRequest) {
-  console.log('Middleware running for:', request.nextUrl.pathname)
-  
   const token = request.cookies.get('token')?.value
-  console.log('Token found:', !!token)
 
   if (request.nextUrl.pathname.startsWith('/clients')) {
     if (!token) {
-      console.log('No token found, redirecting to login')
       return NextResponse.redirect(new URL('/', request.url))
     }
-    console.log('Token found, allowing access to /clients')
+
+    try {
+      // Verify token is valid
+      const decoded = jwtDecode(token)
+      if (!decoded) {
+        return NextResponse.redirect(new URL('/', request.url))
+      }
+    } catch (error) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
   }
 
   return NextResponse.next()

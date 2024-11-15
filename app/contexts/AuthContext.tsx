@@ -20,6 +20,7 @@ const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -38,8 +39,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Auth state error:', error)
       setUser(null)
+    } finally {
+      setLoading(false)
     }
   }, [])
+
+  if (loading) {
+    return null // or a loading spinner
+  }
 
   const login = (token: string) => {
     try {
