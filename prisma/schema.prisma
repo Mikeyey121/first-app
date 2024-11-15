@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model clients {
+  id            Int             @id @default(autoincrement())
+  therapist_id  Int?
+  first_name    String          @db.VarChar(255)
+  last_name     String          @db.VarChar(255)
+  email         String?         @db.VarChar(255)
+  phone         String?         @db.VarChar(20)
+  status        clients_status? @default(active)
+  created_at    DateTime?       @default(now()) @db.Timestamp(0)
+  therapists    therapists?     @relation(fields: [therapist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clients_ibfk_1")
+  session_notes session_notes[]
+
+  @@index([therapist_id], map: "therapist_id")
+}
+
+model session_notes {
+  id           Int         @id @default(autoincrement())
+  client_id    Int?
+  therapist_id Int?
+  session_date DateTime    @db.DateTime(0)
+  notes        String?     @db.Text
+  created_at   DateTime?   @default(now()) @db.Timestamp(0)
+  updated_at   DateTime?   @default(now()) @db.Timestamp(0)
+  clients      clients?    @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "session_notes_ibfk_1")
+  therapists   therapists? @relation(fields: [therapist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "session_notes_ibfk_2")
+
+  @@index([client_id], map: "client_id")
+  @@index([therapist_id], map: "therapist_id")
+}
+
+model therapists {
+  id            Int             @id @default(autoincrement())
+  first_name    String          @db.VarChar(255)
+  last_name     String          @db.VarChar(255)
+  email         String          @unique @db.VarChar(255)
+  password_hash String          @db.VarChar(255)
+  role          Role            @default(THERAPIST)
+  clients       clients[]
+  session_notes session_notes[]
+  created_at    DateTime        @default(now()) @db.Timestamp(0)
+}
+
+enum clients_status {
+  active
+  inactive
+}
+
+enum Role {
+  ADMIN
+  THERAPIST
+}
