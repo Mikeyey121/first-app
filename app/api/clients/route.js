@@ -65,20 +65,30 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const data = await request.json()
-    console.log('Attempting to create client with data:', data)
+    const authHeader = request.headers.get('Authorization')
     
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const token = authHeader.split(' ')[1]
+    const decoded = verifyToken(token)
+    
+    if (!decoded) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+    }
+
     const client = await prisma.clients.create({
       data: {
-        first_name: data.firstName,
-        last_name: data.lastName,
+        first_name: data.first_name,
+        last_name: data.last_name,
         email: data.email || null,
         phone: data.phone || null,
-        therapist_id: data.therapistId,
+        therapist_id: decoded.id,
         status: 'active'
       },
     })
     
-    console.log('Created client:', client)
     return NextResponse.json(client)
   } catch (error) {
     console.error('POST Error details:', error)
