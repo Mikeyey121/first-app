@@ -34,7 +34,9 @@ export default function ClientsPage() {
               <h1 className="text-2xl font-bold text-gray-900">Client Management</h1>
             </div>
             <div className="flex items-center">
-              <span className="text-gray-600 mr-4">Welcome, {user.email}</span>
+              <span className="text-gray-600 mr-4">
+                Hello, {user.first_name || 'there'}
+              </span>
               <button
                 onClick={handleLogout}
                 className="inline-flex items-center px-4 py-2 border border-transparent 

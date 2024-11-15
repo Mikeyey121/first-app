@@ -30,14 +30,13 @@ export async function POST(request: Request) {
       { 
         id: therapist.id,
         email: therapist.email,
-        role: therapist.role 
+        role: therapist.role,
+        first_name: therapist.first_name
       },
       process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '1d' }
     )
-
-    console.log('Generated token:', token)
-
+        
     const response = NextResponse.json({ token })
 
     response.cookies.set({
