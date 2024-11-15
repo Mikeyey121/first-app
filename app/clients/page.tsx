@@ -37,10 +37,10 @@ export default function ClientsPage() {
               <span className="text-gray-600 mr-4 group">
                 <span className="inline-flex items-center">
                   Hello, 
-                  <span className="font-semibold text-blue-600 ml-2 group-hover:scale-105 transition-transform duration-200">
+                  <span className="font-semibold text-blue-600 ml-2 hover:text-blue-700 transition-colors duration-200">
                     {user.first_name || 'there'}
                   </span>
-                  <span className="text-yellow-500 ml-1 animate-bounce">!</span>
+                  <span className="text-blue-600 ml-1">!</span>
                 </span>
               </span>
               <button
