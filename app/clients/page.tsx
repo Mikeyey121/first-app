@@ -34,8 +34,14 @@ export default function ClientsPage() {
               <h1 className="text-2xl font-bold text-gray-900">Client Management</h1>
             </div>
             <div className="flex items-center">
-              <span className="text-gray-600 mr-4">
-                Hello, {user.first_name || 'there'}
+              <span className="text-gray-600 mr-4 group">
+                <span className="inline-flex items-center">
+                  Hello, 
+                  <span className="font-semibold text-blue-600 ml-2 group-hover:scale-105 transition-transform duration-200">
+                    {user.first_name || 'there'}
+                  </span>
+                  <span className="text-yellow-500 ml-1 animate-bounce">!</span>
+                </span>
               </span>
               <button
                 onClick={handleLogout}
