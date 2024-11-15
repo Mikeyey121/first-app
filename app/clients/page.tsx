@@ -5,6 +5,7 @@ import ClientList from '../components/ClientList'
 import { useRef } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useRouter } from 'next/navigation'
+import TherapistManagement from '../components/TherapistManagement'
 
 export default function ClientsPage() {
   const clientListRef = useRef<{ refresh: () => void }>()
@@ -76,6 +77,12 @@ export default function ClientsPage() {
           </div>
         </div>
       </main>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ClientForm onClientAdded={() => clientListRef.current?.refresh()} />
+        <ClientList ref={clientListRef} />
+        {user.role === 'ADMIN' && <TherapistManagement />}
+      </div>
     </div>
   )
 }
