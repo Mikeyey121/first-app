@@ -31,3 +31,37 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = params
+    const authHeader = request.headers.get('Authorization')
+    
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const token = authHeader.split(' ')[1]
+    const decoded = verifyToken(token)
+    
+    if (!decoded || decoded.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const updateData = await request.json()
+    
+    const therapist = await prisma.therapists.update({
+      where: { id: parseInt(id) },
+      data: {
+        first_name: updateData.first_name,
+        last_name: updateData.last_name,
+        email: updateData.email,
+        role: updateData.role
+      }
+    })
+
+    return NextResponse.json(therapist)
+  } catch (error) {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
+}

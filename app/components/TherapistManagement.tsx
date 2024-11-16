@@ -17,7 +17,7 @@ const TherapistManagement = () => {
     first_name: '',
     last_name: '',
     email: '',
-    role: ''
+    role: 'THERAPIST'
   })
   const { user } = useAuth()
 
@@ -46,7 +46,7 @@ const TherapistManagement = () => {
   const handleEdit = async (therapistId: number) => {
     try {
       const response = await fetch(`/api/admin/therapists/${therapistId}`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1]}`
@@ -57,6 +57,9 @@ const TherapistManagement = () => {
       if (response.ok) {
         fetchTherapists()
         setEditingTherapist(null)
+      } else {
+        const error = await response.json()
+        console.error('Error updating therapist:', error)
       }
     } catch (error) {
       console.error('Error updating therapist:', error)
@@ -73,8 +76,11 @@ const TherapistManagement = () => {
       })
 
       if (response.ok) {
-        fetchTherapists()
+        await fetchTherapists()
         setDeleteConfirm(null)
+      } else {
+        const error = await response.json()
+        console.error('Error deleting therapist:', error)
       }
     } catch (error) {
       console.error('Error deleting therapist:', error)
