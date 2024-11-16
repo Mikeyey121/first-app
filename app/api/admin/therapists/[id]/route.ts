@@ -43,7 +43,6 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
-
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   try {
     const authHeader = request.headers.get('Authorization')
