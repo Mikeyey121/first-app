@@ -86,7 +86,7 @@ const TherapistManagement = () => {
       <h3 className="text-lg font-medium leading-6 text-gray-900">
         Therapist Management
       </h3>
-      <p className="mt-1 text-sm text-gray-500">
+      <p className="mt-1 text-sm text-gray-600">
         Manage therapist accounts and credentials
       </p>
       
@@ -100,30 +100,30 @@ const TherapistManagement = () => {
                     type="text"
                     value={editForm.first_name}
                     onChange={(e) => setEditForm({...editForm, first_name: e.target.value})}
-                    className="border rounded-md px-3 py-2"
+                    className="border rounded-md px-3 py-2 text-gray-900"
                     placeholder="First Name"
                   />
                   <input
                     type="text"
                     value={editForm.last_name}
                     onChange={(e) => setEditForm({...editForm, last_name: e.target.value})}
-                    className="border rounded-md px-3 py-2"
+                    className="border rounded-md px-3 py-2 text-gray-900"
                     placeholder="Last Name"
                   />
                   <input
                     type="email"
                     value={editForm.email}
                     onChange={(e) => setEditForm({...editForm, email: e.target.value})}
-                    className="border rounded-md px-3 py-2"
+                    className="border rounded-md px-3 py-2 text-gray-900"
                     placeholder="Email"
                   />
                   <select
                     value={editForm.role}
                     onChange={(e) => setEditForm({...editForm, role: e.target.value})}
-                    className="border rounded-md px-3 py-2"
+                    className="border rounded-md px-3 py-2 text-gray-900"
                   >
-                    <option value="THERAPIST">Therapist</option>
-                    <option value="ADMIN">Admin</option>
+                    <option value="THERAPIST" className="text-gray-900">Therapist</option>
+                    <option value="ADMIN" className="text-gray-900">Admin</option>
                   </select>
                 </div>
                 <div className="flex justify-end space-x-3">
@@ -144,10 +144,10 @@ const TherapistManagement = () => {
             ) : (
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-lg font-medium">
+                  <h4 className="text-lg font-medium text-gray-900">
                     {therapist.first_name} {therapist.last_name}
                   </h4>
-                  <p className="text-sm text-gray-500">{therapist.email}</p>
+                  <p className="text-sm text-gray-600">{therapist.email}</p>
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                     {therapist.role}
                   </span>
