@@ -20,7 +20,6 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     const { id } = params
     const updates = await request.json()
     
-    // If password is being updated, hash it
     if (updates.password) {
       updates.password_hash = await bcrypt.hash(updates.password, 10)
       delete updates.password
@@ -61,7 +60,6 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
     const { id } = params
     
-    // Prevent admin from deleting themselves
     if (decoded.id === parseInt(id)) {
       return NextResponse.json({ error: 'Cannot delete your own account' }, { status: 400 })
     }
