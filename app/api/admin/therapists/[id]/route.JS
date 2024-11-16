@@ -1,17 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { verifyToken } from '@/lib/auth'
 
-interface RouteContext {
-  params: {
-    id: string
-  }
-}
-
-export async function DELETE(_: NextRequest, context: RouteContext) {
+export async function DELETE(request, { params }) {
   try {
-    const { id } = context.params
-    const authHeader = _.headers.get('Authorization')
+    const { id } = params
+    const authHeader = request.headers.get('Authorization')
     
     if (!authHeader?.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
