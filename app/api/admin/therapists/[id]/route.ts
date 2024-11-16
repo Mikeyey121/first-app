@@ -43,8 +43,12 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: Request,
+  context: { params: { id: string } }
+) {
   try {
+    const { id } = context.params
     const authHeader = request.headers.get('Authorization')
     if (!authHeader?.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -56,8 +60,6 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     if (!decoded || decoded.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
-    const { id } = params
     
     if (decoded.id === parseInt(id)) {
       return NextResponse.json({ error: 'Cannot delete your own account' }, { status: 400 })
