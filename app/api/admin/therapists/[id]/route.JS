@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { verifyToken } from '@/lib/auth'
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request, context) {
   try {
-    const { id } = params
+    const id = await context.params.id
     const authHeader = request.headers.get('Authorization')
     
     if (!authHeader?.startsWith('Bearer ')) {
@@ -32,9 +32,9 @@ export async function DELETE(request, { params }) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(request, context) {
   try {
-    const { id } = params
+    const id = await context.params.id
     const authHeader = request.headers.get('Authorization')
     
     if (!authHeader?.startsWith('Bearer ')) {
