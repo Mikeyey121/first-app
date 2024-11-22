@@ -1,10 +1,20 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { verifyToken } from '@/lib/auth'
+import jwt from 'jsonwebtoken'
+
+// Helper function to verify token
+const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
+  } catch {
+    return null
+  }
+}
 
 export async function DELETE(request, context) {
   try {
-    const id = await context.params.id
+    const { id } = params
     const authHeader = request.headers.get('Authorization')
     
     if (!authHeader?.startsWith('Bearer ')) {
