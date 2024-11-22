@@ -12,7 +12,7 @@ const verifyToken = (token) => {
   }
 }
 
-export async function DELETE(request, context) {
+export async function DELETE(request, params) {
   try {
     const { id } = params
     const authHeader = request.headers.get('Authorization')
